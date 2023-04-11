@@ -24,7 +24,7 @@ at any time to see the number of active processes on your machine.
 
 Simply run:
 ```
-$ rmmod proc_count
+$ sudo rmmod proc_count
 ```
 to remove the module and unmount `/proc/count`. Please note that this only works because there are no dependencies.
 
