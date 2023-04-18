@@ -1,6 +1,6 @@
 OBJS = pipe.o
 
-CFLAGS = -std=c17 -Wpedantic -Wall -O2 -pipe -fno-plt
+CFLAGS = -std=c17 -Wpedantic -Wall -Wshadow -Wextra -Werror -O2 -pipe -fno-plt
 LDFLAGS = -Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now
 FILENAME=README.md
 UID = $(shell cat ${FILENAME} | grep '## UID'| grep -oe '\([0-9.]*\)')
@@ -12,3 +12,5 @@ tar:
 .PHONY: clean
 clean:
 	@rm -f ${OBJS} pipe
+check: pipe
+	[ "$$(./pipe ls cat head)" = "$$(ls | cat | head)" ]
