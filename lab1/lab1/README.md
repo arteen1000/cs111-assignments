@@ -9,15 +9,16 @@ Similar functionality to the UNIX Pipe `|` operator.
 
 Build the program by running `make` with the provided Makefile.
 
+This program was tested on Linux kernel [release](https://kernel.org) 5.14.8-arch1-1 and also on MacOS Ventura 13.3.1. To build on MacOS, remove the line beginning with `LDFLAGS` in the Makefile.
+
 ## Running
 
 The program is meant to have similar functionality to the UNIX Pipe so that `ls | wc | cat` is the equivalent of `./pipe ls wc cat`.
 
-All arguments to the command must be command names or paths to executables. The program will terminate early with relevant exit status if
-any system call fails or any of the sub-commands have non-zero status.
+All arguments to the command must be command names or paths to executables. The program will terminate early with relevant exit status if any system call returns failure or any of the sub-commands exit with non-zero status.
 
-The program will return an error code if run with no arguments:
-
+The program will return with error code `EINVAL` if run with no arguments:
+    
 ```
 $ ./pipe
 ```
