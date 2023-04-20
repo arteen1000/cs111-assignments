@@ -83,6 +83,7 @@ int main(int argc, char *argv[])
       }
 
       rc = execvp(argv[i+1], (char *[]) { argv[i+1], NULL });
+      
       if (rc == -1) {
 	status = errno;
 	perror("execvp");
@@ -90,28 +91,34 @@ int main(int argc, char *argv[])
       }
       
     }
-
+    /* parent continues to next iteration after closing relevant fd */
+    
     else if (rc > 0) {
-      
-      pid_t child_pid = rc;
-      int wstatus;
-      
+
       rc = close(fds[i][1]);
       if ( (status = handle_close_ret(rc)) ) return status;
+
       
-
-      rc = waitpid(child_pid, &wstatus, 0);
-      if (rc == -1) {
-	status = errno;
-	perror("waitpid");
-	return status;
-      }
-
       /* close read ends to avoid pipe() ret EMFILE */
 
       if (i > 0) {
 	  rc = close(fds[i-1][0]);
 	  if ( (status = handle_close_ret(rc)) ) return status;
+      }
+      
+    }
+    
+  }
+
+  for (int i = 0 ; i < argc - 1 ; i++) {
+    
+      int wstatus;
+
+      rc = waitpid(-1, &wstatus, 0);
+      if (rc == -1) {
+	status = errno;
+	perror("waitpid");
+	return status;
       }
 	  
 
@@ -120,10 +127,8 @@ int main(int argc, char *argv[])
       } else {
 	return ECHILD;
       }
-      
-    }
-
   }
+      
 
   return status;
   
