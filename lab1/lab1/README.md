@@ -9,7 +9,7 @@ Similar functionality to the UNIX Pipe `|` operator.
 
 Build the program by running `make` with the provided Makefile.
 
-This program was tested on Linux kernel [release](https://kernel.org) 5.14.8-arch1-1 and also on MacOS Ventura 13.3.1. To build on MacOS, remove the line beginning with `LDFLAGS` in the Makefile.
+This program was tested on Linux kernel [release](https://kernel.org) 5.14.8-arch1-1 and also on MacOS Ventura 13.3.1.
 
 ## Running
 

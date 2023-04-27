@@ -1,7 +1,12 @@
 OBJS = pipe.o
 
 CFLAGS = -std=c17 -Wpedantic -Wall -Wshadow -Wextra -Werror -O2 -pipe -fno-plt
-LDFLAGS = -Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now
+ifeq ($(shell uname -s),Darwin)
+	LDFLAGS =
+else
+	LDFLAGS = -Wl,-O1,--sort-common,--as-needed,-z,relro,-z,now
+endif
+
 FILENAME=README.md
 UID = $(shell cat ${FILENAME} | grep '## UID'| grep -oe '\([0-9.]*\)')
 
@@ -13,4 +18,4 @@ tar:
 clean:
 	@rm -f ${OBJS} pipe
 check: pipe
-	[ "$$(./pipe ls cat head)" = "$$(ls | cat | head)" ]
+	[ "$$(./pipe ls cat cat cat head)" = "$$(ls | cat | cat | cat | head)" ]
