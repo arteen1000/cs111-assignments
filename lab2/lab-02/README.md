@@ -21,7 +21,7 @@ This program was tested on Linux kernel [release](https://kernel.org) 5.14.8-arc
 
 ### Input File
 
-See the attached file `processes.txt` for an example of the accepted format. The outline is as follows, where any `[---]` must be an unsigned integer:
+See the attached file `processes.txt` for an example of the accepted format. The outline is as follows, where anything between `[ ]` must be an unsigned integer:
 
 ```
 [number of processes to schedule]
@@ -38,7 +38,7 @@ Note that it is not necessary for the list to be ordered by arrival time.
 Simply perform the following command within your favorite shell:
 
 ```
-$ ./rr [path to input file] [time quanta]
+$ ./rr [path to input file] [time quantum]
 ```
 
 and the program will display the average waiting and response times.
