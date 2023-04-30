@@ -14,7 +14,7 @@ This program was tested on Linux kernel [release](https://kernel.org) 5.14.8-arc
 - one unit of time is atomic (indivisible)
 - processes produce a response immediately upon execution
 - there is no context switch time
-- the scheduler is "tickless" or "one shot" -- if a process terminates in the middle of a time slice, the next timer interrupt will be generated at `now() + quantum_length`
+- the scheduler is "tickless" and runs on a "one shot" hardware timer -- if a process terminates in the middle of a time slice, the next timer interrupt will be generated at `now() + quantum_length`
 - the currently running process will always be queued after those that arrive at the time its quanta is over
 
 ## Running the Simulation
