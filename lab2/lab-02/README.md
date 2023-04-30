@@ -1,4 +1,4 @@
-## Round Robin Scheduling Simulation
+# Round Robin Scheduling Simulation
 
 Program simulates round-robin scheduling for given input file of processes.
 
@@ -19,7 +19,7 @@ This program was tested on Linux kernel [release](https://kernel.org) 5.14.8-arc
 
 ## Running the Simulation
 
-# Input File
+### Input File
 
 See the attached file `processes.txt` for an example of the accepted format. The outline is as follows, where any `[---]` must be an unsigned integer:
 
@@ -33,7 +33,7 @@ See the attached file `processes.txt` for an example of the accepted format. The
 
 Note that it is not necessary for the list to be ordered by arrival time.
 
-# Executing the Program
+### Executing the Program
 
 Simply perform the following command within your favorite shell:
 

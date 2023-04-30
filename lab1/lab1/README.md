@@ -1,6 +1,3 @@
-## UID: 205577156
-(IMPORTANT: Only replace the above numbers with your true UID, do not modify spacing and newlines, otherwise your tarfile might not be created correctly)
-
 ## Pipe Up
 
 Similar functionality to the UNIX Pipe `|` operator.

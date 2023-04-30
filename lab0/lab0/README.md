@@ -1,5 +1,3 @@
-## UID: 205577156
-
 # A Kernel Seedling
 
 Create virtual file /proc/count to display number of active processes on machine.
