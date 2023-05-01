@@ -211,6 +211,7 @@ int main(int argc, char *argv[])
   init_processes(argv[1], &data, &size);
 
   int quantum_length = next_int_from_c_str(argv[2]);
+  if (quantum_length == 0) return EINVAL;
 
   int total_waiting_time = 0;
   int total_response_time = 0;
@@ -221,9 +222,9 @@ int main(int argc, char *argv[])
   add_to_sched_queue(current_time);
   
   do {
-    if (all_done()) break;
     
     if (sched_queue.head)
+      
       {
 
       if (sched_queue.head->remaining_time == sched_queue.head->burst_time)
@@ -252,20 +253,23 @@ int main(int argc, char *argv[])
           sched_queue.tail = sched_queue.tail->next;
         }
       }
+      
       } else add_to_sched_queue(++current_time);
     
 #ifdef DEBUG
     print_out_sched_queue(current_time);
 #endif    
-  } while (true);
+  } while (!all_done());
 
   for (int i = 0 ; i < size ; i++) {
     total_response_time += data[i].response_time;
     total_waiting_time += data[i].waiting_time;
   }
+  
 #ifdef DEBUG
   print_out_data();
-#endif  
+#endif
+  
   printf("Average waiting time: %.2f\n", (float) total_waiting_time / size);
   printf("Average response time: %.2f\n", (float) total_response_time / size);
 
