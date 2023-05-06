@@ -38,9 +38,7 @@ The implementation is of an open hash table, in which every entry holds a linked
 
 In `hash-table-v1.c`, a single coarse grain lock (`pthread_mutex_t`) was introduced within `hash_table_v1`. This was initialized with `pthread_mutex_init` when the hash table was created in `hash_table_v1_create`. The lock was later destroyed using `pthread_mutex_destroy` when the hash table was destroyed in `hash_table_v1_destroy`.
 
-As a sidenote, when looking at the current implementation of [pthread_mutex_destroy](http://git.savannah.gnu.org/cgit/hurd/libpthread.git/tree/sysdeps/generic/pt-mutex-destroy.c), it can be seen that when no attributes are specified, destruction is unnecessary. Additionally, initialization in this default (`NULL` attr) manner could have been done using the macro `PTHREAD_MUTEX_INITIALIZER`; however, in the interest of strict conformance to the spec, the `pthread_mutex_init` and `pthread_mutex_destroy` functions were used.
-
-In addition, upon any error returned by these functions (also including `pthread_mutex_unlock` and `pthread_mutex_lock`), the program simply exits, again in strict conformance of the specification.
+Upon any error returned by the `pthreads` functions, the program simply exits, in conformance of the specification.
 
 As for the actual implementation, the coarse-grain lock was introduced within `hash_table_v1_add_entry`. The lock was locked using `pthread_mutex_lock` before any accesses to the list data structure within an individual hash table entry (the retrieval of the hash table entry itself that the thread was interested in adding to was not in the critical section and was thus thread-safe). The coarse-grain lock was released using `pthread_mutex_unlock` before the function return points. 
 
