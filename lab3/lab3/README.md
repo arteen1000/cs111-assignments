@@ -40,15 +40,15 @@ In `hash-table-v1.c`, a single coarse grain lock (`pthread_mutex_t`) was introdu
 
 Upon any error returned by the `pthreads` functions, the program simply exits, in conformance of the specification.
 
-As for the actual implementation, the coarse-grain lock was introduced within `hash_table_v1_add_entry`. The lock was locked using `pthread_mutex_lock` before any accesses to the list data structure within an individual hash table entry (the retrieval of the hash table entry itself that the thread was interested in adding to was not in the critical section and was thus thread-safe). The coarse-grain lock was released using `pthread_mutex_unlock` before the function return points. 
+As for the actual implementation, the coarse-grain lock was introduced within `hash_table_v1_add_entry`. The lock was locked using `pthread_mutex_lock` before any accesses to the list data structure within an individual hash table entry (the retrieval of the hash table entry itself and the head of the list within were determined thread-safe). The coarse-grain lock was released using `pthread_mutex_unlock` before the function return points. 
 
-The reason for the critical section containing all list-related reads and writes is that any update by another thread could have race conditions in the access of a given list data structure, and we were not locking on a per-list basis so we had to account for the worst case in which every thread wishes to access the same list.
+The reason for the critical section containing all list-internal reads and writes is that any update by another thread could have race conditions in the access of that given list data structure, and since there is a single lock for the entire hash table, the worst case scenario in which every thread wishes to access the same list must be considered.
 
 ### hash-table-v2
 
 In `hash-table-v2.c`, a fine grain locking strategy was used, with one per `hash_table_entry`. These correspond locks on the chained list that the hash table entry holds, with a per-list locking strategy being used. The individual locks were initialized in a looped fashion within `hash_table_v2_create` using `pthread_mutex_init` and destroyed in a similar fashion within `hash_table_v2_destroy` using `pthread_mutex_destroy`.
 
-The actual placements of the locks were exactly the same as `hash-table-v1`; however, the fine grain lock for the particular hash table entry, where the thread was adding an element to, was used. This can be seen in `hash_table_v2_add_entry`. The reason for this is because there are no race conditions with updates to other hash table entries. Race conditions only exist when two threads attempt to add an element to the same hash table entry.
+The actual placements of the locks were exactly the same as `hash-table-v1`; however, the fine grain lock for the particular hash table entry, where the thread is adding an element to, was used. This can be seen in `hash_table_v2_add_entry`. The reason for this is because there are no race conditions with updates to other hash table entries. Race conditions only exist when two threads attempt to add an element to the same hash table entry's internal list.
 
 All errors returned by the `pthreads` library functions were handled with a program exit.
 

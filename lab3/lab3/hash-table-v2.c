@@ -76,10 +76,12 @@ void hash_table_v2_add_entry(struct hash_table_v2 *hash_table,
                              uint32_t value)
 {
 	struct hash_table_entry *hash_table_entry = get_hash_table_entry(hash_table, key);
+	struct list_head *list_head = &hash_table_entry->list_head;
+
 	int err;
 	err = pthread_mutex_lock(&hash_table_entry->fine_grain);
 	if (err) _Exit(err);
-	struct list_head *list_head = &hash_table_entry->list_head;
+	
 	struct list_entry *list_entry = get_list_entry(hash_table, key, list_head);
 
 	/* Update the value if it already exists */

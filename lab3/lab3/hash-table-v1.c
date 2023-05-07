@@ -81,16 +81,18 @@ void hash_table_v1_add_entry(struct hash_table_v1 *hash_table,
                              const char *key,
                              uint32_t value)
 {
-    // safe, grabs corresponding hash table entry for the key
+    // safe, grabs corresponding hash table entry for the key, doesn't change
 	struct hash_table_entry *hash_table_entry = get_hash_table_entry(hash_table, key);
+	// safe, simply points to the current list_head structure, doesn't change
+	struct list_head *list_head = &hash_table_entry->list_head;
+
 	int err;
 	err = pthread_mutex_lock(&hash_table->coarse_grain);
 	if (err) _Exit(err);
-	// another thread may update list_head by inserting a head
-	struct list_head *list_head = &hash_table_entry->list_head;
+	
 	// another thread may concurrently update SLIST while traversing
 	struct list_entry *list_entry = get_list_entry(hash_table, key, list_head);
-
+	
 	/* Update the value if it already exists */
 	if (list_entry != NULL) {
 		list_entry->value = value;
