@@ -1,21 +1,53 @@
-## UID: 123456789
-
-(IMPORTANT: Only replace the above numbers with your true UID, do not modify spacing and newlines, otherwise your tarfile might not be created correctly)
+## UID: 205577156
 
 # Hey! I'm Filing Here
 
-One line description of this code.
+Initialize a minimal `ext2` file system image in `cs111-base.img`.
 
 ## Building
 
-Explain briefly how to build your program.
+Run `make` to create an executable file `ext2-create`. You can then run
+
+```
+$ ./ext2-create
+```
+
+to create the file system image `cs111-base.img`.
+
+You can run `fsck.ext2 cs111-base.img` to check the file system and `dumpe2fs cs111-base.img` to dump information on the file system.
+
+In addition, you can run `python -m unittest` to verify that it passes all unit tests.
 
 ## Running
 
-Show how to compile, mount, and example output of `ls -ain` your mounted
-filesystem.
+Here's a working example of mounting and viewing the file system:
+
+```
+$ make && ./ext2-create
+$ mkdir mnt
+$ sudo mount -o loop cs111-base.img mnt/
+$ ls -ain mnt/
+total 7
+      2 drwxr-xr-x 3    0    0 1024 May 22 08:44 .
+1081967 drwxr-xr-x 5 1000 1000 4096 May 22 08:47 ..
+     13 lrw-r--r-- 1 1000 1000   11 May 22 08:44 hello -> hello-world
+     12 -rw-r--r-- 1 1000 1000   12 May 22 08:44 hello-world
+     11 drwxr-xr-x 2    0    0 1024 May 22 08:44 lost+found
+$ cat mnt/hello mnt/hello-world
+Hello world
+Hello world
+```
 
 ## Cleaning up
 
-Explain briefly how to unmount the filesystem, remove the mount directory, and
-clean up all binary files.
+You can unmount the file system and remove the directory by running:
+
+```
+$ sudo umount mnt && rmdir mnt
+```
+
+You can also run `make clean` to get rid of all binary files.
+
+## OS Platform
+
+Tested and verified on Linux release `5.14.8-arch1-1`.
