@@ -1,8 +1,6 @@
-## UID: 205577156
+# Linux Ext2 File System Initializer
 
-# Hey! I'm Filing Here
-
-Initialize a minimal `ext2` file system image in `cs111-base.img`.
+Initialize a `ext2` file system image in `cs111-base.img`.
 
 ## Building
 
